@@ -1,0 +1,26 @@
+name: 'Download File'
+
+description: 'Downloads a file - supports all platforms'
+
+inputs:
+  url:
+    description: 'The url to download the file from'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+
+    - id: install-wget
+      if: ${{ runner.os == 'Windows'}}
+      run: choco install wget --no-progress
+      shell: bash
+
+    - run: >
+        wget
+        '${{ inputs.url }}'
+        --retry-connrefused
+        --tries=3
+        --no-dns-cache
+        --verbose
+      shell: bash
