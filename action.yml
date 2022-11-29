@@ -16,6 +16,10 @@ runs:
       run: choco install wget --no-progress
       shell: bash
 
+    - if: ${{ failure() && runner.os == 'Windows' }}
+      run: cat C:\ProgramData\chocolatey\logs\chocolatey.log
+      shell: bash
+
     - run: >
         wget
         '${{ inputs.url }}'
