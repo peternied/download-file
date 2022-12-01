@@ -26,5 +26,6 @@ runs:
         --retry-connrefused
         --tries=3
         --no-dns-cache
+        --progress=bar:force:noscroll
         --verbose
       shell: bash
