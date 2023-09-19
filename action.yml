@@ -6,6 +6,10 @@ inputs:
   url:
     description: 'The url to download the file from'
     required: true
+  target:
+    description: 'The target location to output the file to'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -23,6 +27,7 @@ runs:
     - run: >
         wget
         '${{ inputs.url }}'
+        ${{ inputs.target && ('-O \'${{ inputs.target }}\'') }}
         --retry-connrefused
         --tries=3
         --no-dns-cache
