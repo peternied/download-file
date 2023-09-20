@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - if: ${{ runner.os == 'Windows'}}
-      run: choco install wc
+      run: choco install cw
 
     - uses: ./ # Use the action
       with:
@@ -23,7 +23,7 @@ jobs:
     - name: Verify
       run: |
         test -f "favicon.ico" || { echo "File does not exist"; exit 1; }
-        file_size=$(wc -c < "favicon.ico")
+        file_size=$(cw -c < "favicon.ico")
         test $file_size -ge 1024 || { echo "File size is less than 1KB"; exit 1; }
         echo "File exists and is at least 1KB in size"
 
@@ -36,7 +36,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - if: ${{ runner.os == 'Windows'}}
-      run: choco install wc
+      run: choco install cw
 
     - uses: ./ # Use the action
       with:
@@ -46,7 +46,7 @@ jobs:
     - name: Verify
       run: |
         test -f "favicon.file" || { echo "File by target name does not exist"; exit 1; }
-        file_size=$(wc -c < "favicon.file")
+        file_size=$(cw -c < "favicon.file")
         test $file_size -ge 1024 || { echo "File size is less than 1KB"; exit 1; }
         echo "File exists and is at least 1KB in size"
 
@@ -59,7 +59,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - if: ${{ runner.os == 'Windows'}}
-      run: choco install wc
+      run: choco install cw
 
     - uses: ./ # Use the action
       with:
@@ -68,8 +68,8 @@ jobs:
 
     - name: Verify
       run: |
-        test -f "downloads" || { echo "Directory downloads does not exist"; exit 1; }
-        test -f "downloads/favicon.file" || { echo "File inside of downloads does not exist"; exit 1; }
-        file_size=$(wc -c < "downloads/favicon.file")
+        test -f "./downloads" || { echo "Directory downloads does not exist"; exit 1; }
+        test -f "./downloads/favicon.file" || { echo "File inside of downloads does not exist"; exit 1; }
+        file_size=$(cw -c < "./downloads/favicon.file")
         test $file_size -ge 1024 || { echo "File size is less than 1KB"; exit 1; }
         echo "File exists and is at least 1KB in size"
