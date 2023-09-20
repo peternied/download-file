@@ -24,15 +24,15 @@ runs:
       run: cat C:\ProgramData\chocolatey\logs\chocolatey.log
       shell: bash
 
+    - id: settings
+      run: echo "wget-common-args=--retry-connrefused --tries=3 --no-dns-cache --progress=bar:force:noscroll --verbose" >> $GITHUB_OUTPUT
+      shell: bash
+
     - if: inputs.target == ''
       run: >
         wget
         '${{ inputs.url }}'
-        --retry-connrefused
-        --tries=3
-        --no-dns-cache
-        --progress=bar:force:noscroll
-        --verbose
+        ${{steps.settings.outputs.wget-common-args}}
       shell: bash
 
     - if: inputs.target != ''
@@ -41,9 +41,5 @@ runs:
         wget
         -O ${{ inputs.target }}
         '${{ inputs.url }}'
-        --retry-connrefused
-        --tries=3
-        --no-dns-cache
-        --progress=bar:force:noscroll
-        --verbose
+        ${{steps.settings.outputs.wget-common-args}}
       shell: bash
