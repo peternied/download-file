@@ -15,7 +15,7 @@ inputs:
 
 ```yaml
 steps:
-- uses: peternied/download-file@v2
+- uses: peternied/download-file@v3
   with:
     url: https://raw.githubusercontent.com/peternied/download-file/main/README.md
     target: path/to/README.md
@@ -25,6 +25,11 @@ steps:
 ```
 
 # Changelog
+
+## v3
+- Add target optional parameter to specific where the downloaded file should be created
+- Add test workflow that exercises action functionality in linux, windows, and mac platforms
+- Group common wget settings for reuse 
 
 ## v2
 - Reduce the verbosity of the progress bars output to the console
