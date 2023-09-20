@@ -20,7 +20,7 @@ jobs:
 
     - name: Verify
       run: |
-        test -f "favicon.ico" || { echo "File does not exist"; exit 1; }
+        test -e "favicon.ico" || { echo "File does not exist"; exit 1; }
         python -c "import os; exit(1 if os.path.getsize('favicon.ico') < 1024 else 0)" || { echo "File size is less than 1KB"; exit 1; }
 
 
@@ -40,7 +40,7 @@ jobs:
 
     - name: Verify
       run: |
-        test -f "favicon.file" || { echo "File by target name does not exist"; exit 1; }
+        test -e "favicon.file" || { echo "File by target name does not exist"; exit 1; }
         python -c "import os; exit(1 if os.path.getsize('favicon.file') < 1024 else 0)" || { echo "File size is less than 1KB"; exit 1; }
 
 
@@ -60,7 +60,7 @@ jobs:
 
     - name: Verify
       run: |
-        test -f "./downloads" || { echo "Directory downloads does not exist"; ls -al; exit 1; }
-        test -f "./downloads/favicon.file" || { echo "File inside of downloads does not exist"; ls -al; exit 1; }
+        test -e "./downloads" || { echo "Directory downloads does not exist"; ls -al; exit 1; }
+        test -e "./downloads/favicon.file" || { echo "File inside of downloads does not exist"; ls -al; exit 1; }
         python -c "import os; exit(1 if os.path.getsize('./downloads/favicon.file') < 1024 else 0)" || { echo "File size is less than 1KB"; exit 1; }
 
