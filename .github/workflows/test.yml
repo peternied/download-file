@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-minimal-args:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./ # Use the action
+      with:
+        url: https://www.google.com/favicon.ico
+
+    - name: Verify
+      run: |
+        test -e "favicon.ico" || { echo "File does not exist"; exit 1; }
+        python -c "import os; exit(1 if os.path.getsize('favicon.ico') < 1024 else 0)" || { echo "File size is less than 1KB"; exit 1; }
+
+
+  test-with-arg-target:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./ # Use the action
+      with:
+        url: https://www.google.com/favicon.ico
+        target: favicon.file
+
+    - name: Verify
+      run: |
+        test -e "favicon.file" || { echo "File by target name does not exist"; exit 1; }
+        python -c "import os; exit(1 if os.path.getsize('favicon.file') < 1024 else 0)" || { echo "File size is less than 1KB"; exit 1; }
+
+
+  test-with-arg-target-in-sub-directory:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ./ # Use the action
+      with:
+        url: https://www.google.com/favicon.ico
+        target: ./downloads/favicon.file
+
+    - name: Verify
+      run: |
+        test -e "./downloads" || { echo "Directory downloads does not exist"; ls -al; exit 1; }
+        test -e "./downloads/favicon.file" || { echo "File inside of downloads does not exist"; ls -al; exit 1; }
+        python -c "import os; exit(1 if os.path.getsize('./downloads/favicon.file') < 1024 else 0)" || { echo "File size is less than 1KB"; exit 1; }
+
